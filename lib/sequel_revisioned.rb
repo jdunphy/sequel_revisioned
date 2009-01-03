@@ -4,3 +4,5 @@ $:.unshift(File.dirname(__FILE__)) unless
 module SequelRevisioned
   VERSION = '0.0.1'
 end
+
+require 'sequel_revisioned/sequel_revisioned'

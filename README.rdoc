@@ -20,7 +20,7 @@ Sequel plugin designed to maintain a revision history of an object.
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+    sudo gem install sequel_revisioned
 
 == LICENSE:
 
