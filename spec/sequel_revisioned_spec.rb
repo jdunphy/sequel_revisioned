@@ -6,9 +6,14 @@ describe Sequel::Plugins::Revisioned do
   end
   
   #There's a Post class in sequel-setup
-  describe "applied to a model" do
-    it "should generate a [Model]Version class"
-    it "should generate a [Model]Versions table"
+  describe "applied to a Post model" do
+    
+    it "should generate a PostRevision class" do
+      defined?(PostRevision).should == 'constant'
+      PostRevision.superclass.should == Sequel::Model
+    end
+    
+    it "should generate a post_revisions table"
     it "should add an instance method to access versions"
     it "should create a new version if an object is saved"
   end
