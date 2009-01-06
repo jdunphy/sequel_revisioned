@@ -13,7 +13,12 @@ describe Sequel::Plugins::Revisioned do
       PostRevision.superclass.should == Sequel::Model
     end
     
-    it "should generate a post_revisions table"
+    it "should generate a post_revisions table" do
+      PostRevision.table_exists?.should == true 
+      PostRevision.columns.should include(:id)
+      PostRevision.columns.should include(:post_id)
+    end
+    
     it "should add an instance method to access versions"
     it "should create a new version if an object is saved"
   end

@@ -3,11 +3,25 @@ module Sequel
     module Revisioned
       
       def self.apply(model, options = {})
-        to_eval = "
-class ::#{model.name}Revision < Sequel::Model
+        revision_model_name = "::#{model.name}Revision"
+        eval "
+class #{revision_model_name} < Sequel::Model
   
 end"
-        eval(to_eval)
+        revision_model = revision_model_name.constantize
+        unless revision_model.table_exists?
+          migration = "
+          class CreateRevisions < Sequel::Migration
+            def up
+              create_table :#{revision_model.table_name} do
+                primary_key :id
+                number      :#{model.name.underscore}_id
+              end
+            end
+          end
+          CreateRevisions.apply(DB, :up)"
+          eval migration
+        end
       end
 
       module InstanceMethods
