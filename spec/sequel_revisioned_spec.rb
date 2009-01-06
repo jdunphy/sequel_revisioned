@@ -19,7 +19,13 @@ describe Sequel::Plugins::Revisioned do
       PostRevision.columns.should include(:post_id)
     end
     
-    it "should add an instance method to access versions"
-    it "should create a new version if an object is saved"
+    it "should add an instance method to access revisions" do
+      post = Post.new
+      post.save
+      post.methods.should include('revisions')
+      post.revisions.should be_is_a(Array)
+    end
+        
+    it "should create a new revision if an object is saved"
   end
 end
