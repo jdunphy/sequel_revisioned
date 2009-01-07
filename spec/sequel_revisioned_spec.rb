@@ -6,6 +6,9 @@ describe Sequel::Plugins::Revisioned do
   end
   
   #There's a Post class in sequel-setup
+  # class Post < Sequel::Model
+  #   is :revisioned
+  # end
   describe "applied to a Post model" do
     
     it "should generate a PostRevision class" do
@@ -17,8 +20,9 @@ describe Sequel::Plugins::Revisioned do
       PostRevision.table_exists?.should == true 
       PostRevision.columns.should include(:id)
       PostRevision.columns.should include(:post_id)
+      PostRevision.columns.should include(:version)
     end
-    
+        
     it "should add an instance method to access revisions" do
       post = Post.new
       post.save

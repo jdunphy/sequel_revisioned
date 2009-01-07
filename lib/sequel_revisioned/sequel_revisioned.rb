@@ -16,6 +16,7 @@ end"
               create_table :#{revision_model.table_name} do
                 primary_key :id
                 number      :#{model.name.underscore}_id
+                number      :version
               end
             end
           end
