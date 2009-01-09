@@ -29,6 +29,7 @@ describe Sequel::Plugins::Revisioned do
   end
   
   describe "the generated PostRevision" do
+    
     it "should generate a post_revisions table" do
       PostRevision.table_exists?.should == true 
       PostRevision.columns.should include(:id)
@@ -38,6 +39,13 @@ describe Sequel::Plugins::Revisioned do
 
     it "should have a created_at timestamp" do
       PostRevision.columns.should include(:created_at)
+    end
+    
+    it "should have appropriate getters and setters" do
+      pr = PostRevision.new
+      pr.post_id.should be_nil
+      pr.post_id = 1
+      pr.post_id.should eql(1)
     end
     
     it "should have addtional fields for watched columns"
