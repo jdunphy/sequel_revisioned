@@ -25,7 +25,7 @@ end"
           eval migration
         end
         
-        model.class_eval "one_to_many :revisions, :class => 'PostRevision'"
+        model.class_eval "one_to_many :revisions, :class => '#{revision_model}'"
       end
 
       module InstanceMethods
