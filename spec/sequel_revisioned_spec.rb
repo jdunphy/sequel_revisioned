@@ -16,20 +16,33 @@ describe Sequel::Plugins::Revisioned do
       PostRevision.superclass.should == Sequel::Model
     end
     
-    it "should generate a post_revisions table" do
-      PostRevision.table_exists?.should == true 
-      PostRevision.columns.should include(:id)
-      PostRevision.columns.should include(:post_id)
-      PostRevision.columns.should include(:version)
-    end
-        
     it "should add an instance method to access revisions" do
       post = Post.new
       post.save
       post.methods.should include('revisions')
       post.revisions.should be_is_a(Array)
     end
-        
+    
     it "should create a new revision if an object is saved"
+    it "should create a new revision if an object is updated"
+    it "should provide a method to roll back to a previous version"
+  end
+  
+  describe "the generated PostRevision" do
+    it "should generate a post_revisions table" do
+      PostRevision.table_exists?.should == true 
+      PostRevision.columns.should include(:id)
+      PostRevision.columns.should include(:post_id)
+      PostRevision.columns.should include(:version)
+    end
+
+    it "should have a created_at timestamp" do
+      PostRevision.columns.should include(:created_at)
+    end
+    
+    it "should have addtional fields for watched columns"
+    it "should set :created_at when a revision is created"
+    it "should set :version to the next sequential number when a revision is created"
+    
   end
 end

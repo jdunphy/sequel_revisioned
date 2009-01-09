@@ -17,6 +17,7 @@ end"
                 primary_key :id
                 number      :#{model.name.underscore}_id
                 number      :version
+                timestamp   :created_at
               end
             end
           end
