@@ -6,6 +6,12 @@ module Sequel
         revision_model_name = "::#{model.name}Revision"
         eval "
 class #{revision_model_name} < Sequel::Model
+  before_save :set_created_at
+  
+  private 
+    def set_created_at
+      self.created_at ||= Time.now
+    end
 end"
         revision_model = revision_model_name.constantize
         unless revision_model.table_exists?

@@ -29,7 +29,15 @@ describe Sequel::Plugins::Revisioned do
       post.revisions.length.should eql(1)
     end
     
-    it "should create a new revision if an object is updated"
+    it "should create a new revision if an object is updated" do 
+      post = Post.new
+      post.body = "Foo"
+      post.save
+      post.body = "boo"
+      post.save
+      post.revisions.length.should eql(2)
+    end
+    
     it "should provide a method to roll back to a previous version"
   end
   
@@ -54,7 +62,12 @@ describe Sequel::Plugins::Revisioned do
     end
     
     it "should have addtional fields for watched columns"
-    it "should set :created_at when a revision is created"
+    it "should set :created_at when a revision is created" do
+      pr = PostRevision.new
+      pr.save
+      pr.created_at.should_not be_nil
+    end
+    
     it "should set :version to the next sequential number when a revision is created"
     
   end
