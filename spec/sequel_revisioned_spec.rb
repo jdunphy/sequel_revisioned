@@ -23,7 +23,12 @@ describe Sequel::Plugins::Revisioned do
       post.revisions.should be_is_a(Array)
     end
     
-    it "should create a new revision if an object is saved"
+    it "should create a new revision if an object is saved" do
+      post = Post.new
+      post.save
+      post.revisions.length.should eql(1)
+    end
+    
     it "should create a new revision if an object is updated"
     it "should provide a method to roll back to a previous version"
   end
