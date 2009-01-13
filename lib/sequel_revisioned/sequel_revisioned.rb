@@ -35,7 +35,7 @@ end"
         end
         
         model.class_eval "
-          one_to_many :revisions, :class => '#{revision_model}'
+          one_to_many :revisions, :class => '#{revision_model}', :order => :version.desc
           after_save :generate_revision
           
           def generate_revision
