@@ -6,9 +6,32 @@ module Sequel
         revision_model_name = "::#{model.name}Revision"
         eval "
 class #{revision_model_name} < Sequel::Model
-  before_save :set_created_at
+  before_create :set_created_at
+  before_create :set_version
+  many_to_one :#{model.name.underscore}
+  
+  def next_revision
+    if version && post_id
+      self.class.find(:post_id => post_id, :version => version + 1)
+    end
+  end
+  
+  def previous_revision
+    if version && post_id && version > 1
+      self.class.find(:post_id => post_id, :version => version - 1)
+    end
+  end
   
   private 
+  
+    def set_version
+      if last_revision = #{model.name.underscore}.revisions.first
+        self.version = last_revision.version + 1
+      else
+        self.version = 1
+      end
+    end
+    
     def set_created_at
       self.created_at ||= Time.now
     end
@@ -19,10 +42,10 @@ end"
           class CreateRevisions < Sequel::Migration
             def up
               create_table :#{revision_model.table_name} do
-                primary_key :id
-                number      :#{model.name.underscore}_id
-                number      :version
-                timestamp   :created_at
+                primary_key  :id
+                integer      :#{model.name.underscore}_id
+                integer      :version
+                timestamp    :created_at
               end
             end
           end
