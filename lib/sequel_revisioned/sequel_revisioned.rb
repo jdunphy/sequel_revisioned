@@ -46,6 +46,7 @@ end"
                 integer      :#{model.name.underscore}_id
                 integer      :version
                 timestamp    :created_at
+                #{additional_migration_columns(model, options)}
               end
             end
           end
@@ -68,6 +69,14 @@ end"
           end
           private :generate_revision
         "
+      end
+      
+      def self.additional_migration_columns(model, options = {})
+        if options[:watch]
+          Array(options[:watch]).map do |column|
+            "#{model.db_schema[column.to_sym][:type]} :#{column}"
+          end.join("\n")
+        end
       end
 
       module InstanceMethods

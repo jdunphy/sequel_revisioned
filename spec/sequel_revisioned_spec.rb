@@ -7,7 +7,7 @@ describe Sequel::Plugins::Revisioned do
   
   #There's a Post class in sequel-setup
   # class Post < Sequel::Model
-  #   is :revisioned
+  #   is :revisioned, :watch => :body
   # end
   describe "applied to a Post model" do
     
@@ -63,7 +63,9 @@ describe Sequel::Plugins::Revisioned do
       pr.post_id.should eql(1)
     end
     
-    it "should have addtional fields for watched columns"
+    it "should have addtional fields for watched columns" do
+      PostRevision.columns.should include(:body)
+    end
     
     it "should set :created_at when a revision is created" do
       post = Post.create
