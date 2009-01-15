@@ -63,12 +63,7 @@ end"
           after_save :generate_revision
           @@watched_columns = [#{Array(options[:watch]).map {|w| ":#{w.to_s}"}.join(",")}]
           
-          def generate_revision
-            revision = #{revision_model}.new(watched_data)
-            add_revision(revision)
-            revision.save
-          end
-          private :generate_revision
+          def self.revision_class; #{revision_model}; end
         "
       end
       
@@ -89,6 +84,13 @@ end"
           data
         end
         private :watched_data
+        
+        def generate_revision
+          revision = self.class.revision_class.new(watched_data)
+          add_revision(revision)
+          revision.save
+        end
+        private :generate_revision
       end
       
       module ClassMethods
