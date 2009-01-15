@@ -96,7 +96,20 @@ describe Sequel::Plugins::Revisioned do
     end
     
     it "should set :version to the next sequential number when a revision is created" do
-      pending
+      post = Post.new
+      post.save
+      post.revisions.first.version.should eql(1)
+      post.body = "foo"
+      post.save
+      post.reload
+      post.revisions.first.version.should eql(2)
+    end
+    
+    it "should populate columns watched on the main object" do
+      post = Post.new
+      post.body = "content"
+      post.save
+      post.revisions.first.body.should eql("content")
     end
     
   end
