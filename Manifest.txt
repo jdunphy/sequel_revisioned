@@ -1,9 +1,9 @@
 History.txt
 Manifest.txt
-PostInstall.txt
 README.rdoc
 Rakefile
 lib/sequel_revisioned.rb
+lib/sequel_revisioned/sequel_revisioned.rb
 script/console
 script/destroy
 script/generate

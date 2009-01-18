@@ -1,26 +1,40 @@
 = sequel_revisioned
 
-* FIX (url)
-
 == DESCRIPTION:
 
 Sequel plugin designed to maintain a revision history of an object.
 
-== FEATURES/PROBLEMS:
+Sequel_revisioned will create a revision table and model specific to the class that calls
+`is :revisioned`.  It's set up this way to allow multiple tables to maintain revisions
+without interfering with each other.
 
-* FIX (list of features or problems)
+== USAGE
 
-== SYNOPSIS:
+    class Post < Sequel::Model
+      is :revisioned, :watch => [:title, :body, :synopsis]
+      
+    end
 
-  FIX (code sample of usage)
-
+    $ p = Post[n]
+    $ p.revisions
+    => Array of post's revisions
+    $ p.roll_back(x)
+    => Rolls watched fields back to the sate of revision x
+    
+    $ revision = p.revisions.first
+    $ revision.class.name
+    => PostRevision
+    $ revision.table_name
+    => post_revisions
+    
+    
 == REQUIREMENTS:
 
-* FIX (list of requirements)
-
+  Sequel >= 2.9.0 
+  
 == INSTALL:
 
-    sudo gem install sequel_revisioned
+  sudo gem install jdunphy-sequel_revisioned --source http://gems.github.com
 
 == LICENSE:
 
