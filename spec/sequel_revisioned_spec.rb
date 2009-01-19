@@ -37,10 +37,25 @@ describe Sequel::Plugins::Revisioned do
       post.save
       post.revisions.length.should eql(2)
     end
-     
-    it "should provide a method to roll_back to a previous version"
-    it "calling roll_back without a version number should raise an error"
-    it "calling roll_back with an invalid revision version should raise an error"
+    
+    describe "with a couple revisions" do  
+      before(:each) do
+        @post = Post.new
+        @post.body = "Version 1"
+        @post.save
+        @post.body = "Version 2"
+        @post.save
+      end
+      
+      it "should provide a method to roll_back to a previous version" do
+        @post.roll_back(1)
+        @post.body.should eql('Version 1')
+      end
+    
+      it "calling roll_back with an invalid revision version should raise an error" do
+        lambda { @post.roll_back(4) }.should raise_error(Sequel::InvalidRevisionError)
+      end
+    end
   end
   
   describe "the generated PostRevision" do

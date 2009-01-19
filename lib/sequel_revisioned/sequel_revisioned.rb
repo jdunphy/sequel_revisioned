@@ -1,6 +1,6 @@
 module Sequel
   module Plugins
-    module Revisioned
+    module Revisioned      
       
       def self.apply(model, options = {})
         revision_model_name = "::#{model.name}Revision"
@@ -35,7 +35,8 @@ class #{revision_model_name} < Sequel::Model
     def set_created_at
       self.created_at ||= Time.now
     end
-end"
+end
+"
         revision_model = revision_model_name.constantize
         unless revision_model.table_exists?
           migration = "
@@ -76,6 +77,15 @@ end"
       end
 
       module InstanceMethods
+        
+        def roll_back(version)
+          revision = revisions.detect {|rev| rev.version == version.to_i }
+          raise Sequel::InvalidRevisionError unless revision
+          self.class.watched_columns.each do |col|
+            send("#{col}=", revision.send(col))
+          end
+        end
+        
         def watched_data
           data = {}
           self.class.watched_columns.each do |col|
