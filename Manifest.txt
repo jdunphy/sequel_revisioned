@@ -1,13 +1,5 @@
 History.txt
 Manifest.txt
 README.rdoc
-Rakefile
 lib/sequel_revisioned.rb
 lib/sequel_revisioned/sequel_revisioned.rb
-script/console
-script/destroy
-script/generate
-spec/sequel_revisioned_spec.rb
-spec/spec.opts
-spec/spec_helper.rb
-tasks/rspec.rake
